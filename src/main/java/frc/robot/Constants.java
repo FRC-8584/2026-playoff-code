@@ -16,4 +16,17 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
+  public static class DeviceIDs {
+    public static final int kRollerMotorID = 9;
+  }
+
+  public static class IntakeConstants {
+    // public static final int RollerMotorID = 9;
+
+    // Roller Constants
+    public static final int STATOR_CURRENT_LIMIT_AMPS = 80;
+    public static final int SUPPLY_CURRENT_LIMIT_AMPS = 80;
+  }
+
 }
