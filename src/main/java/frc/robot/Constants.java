@@ -25,8 +25,8 @@ public final class Constants {
     // public static final int RollerMotorID = 9;
 
     // Roller Constants
-    public static final int STATOR_CURRENT_LIMIT_AMPS = 80;
-    public static final int SUPPLY_CURRENT_LIMIT_AMPS = 80;
+    public static final int STATOR_CURRENT_LIMIT_AMPS = 80; //not sure
+    public static final int SUPPLY_CURRENT_LIMIT_AMPS = 80; //not sure
   }
 
 }

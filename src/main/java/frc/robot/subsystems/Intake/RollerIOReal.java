@@ -8,11 +8,14 @@ import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import frc.robot.Constants.DeviceIDs;
+import frc.robot.Constants.IntakeConstants;
 
 /** Add your docs here. */
 public class RollerIOReal implements RollerIO {
@@ -24,15 +27,27 @@ public class RollerIOReal implements RollerIO {
     private final StatusSignal<Current> supplyCurrentAmps;
     
 
-    public RollerIOReal() {
+    public RollerIOReal(boolean isInverted, boolean isCoast) {
         this.rollerMotor = new TalonFX(DeviceIDs.kRollerMotorID);
 
         TalonFXConfiguration config = new TalonFXConfiguration();
+        config.MotorOutput.Inverted = isInverted ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        config.MotorOutput.NeutralMode = isCoast ? NeutralModeValue.Coast : NeutralModeValue.Brake;
+        config.CurrentLimits.SupplyCurrentLimitEnable = true;
+        config.CurrentLimits.SupplyCurrentLimit = IntakeConstants.SUPPLY_CURRENT_LIMIT_AMPS;
+        config.CurrentLimits.StatorCurrentLimitEnable = true;
+        config.CurrentLimits.StatorCurrentLimit = IntakeConstants.STATOR_CURRENT_LIMIT_AMPS;
+        rollerMotor.getConfigurator().apply(config);
+
+        rollerMotor.clearStickyFaults();
 
         rollingRotPerSec = rollerMotor.getVelocity();
         rollerMotorVolts = rollerMotor.getMotorVoltage();
         statorCurrentAmps = rollerMotor.getStatorCurrent();
         supplyCurrentAmps = rollerMotor.getSupplyCurrent();
+
+        BaseStatusSignal.setUpdateFrequencyForAll(50.0, rollingRotPerSec, rollerMotorVolts, statorCurrentAmps, supplyCurrentAmps);
+        rollerMotor.optimizeBusUtilization();
     }
 
     @Override
@@ -45,8 +60,12 @@ public class RollerIOReal implements RollerIO {
     }
 
     @Override
-    public void setVoltage(double voltage) {}
+    public void setVoltage(double voltage) {
+        rollerMotor.setVoltage(voltage);
+    }
 
     @Override
-    public void setVelocity(double velocityRPS) {}
+    public void setVelocity(double velocityRPS) {
+        rollerMotor.set(velocityRPS);
+    }
 }
