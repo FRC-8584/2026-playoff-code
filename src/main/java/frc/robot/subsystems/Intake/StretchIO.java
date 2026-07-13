@@ -1,10 +1,15 @@
 package frc.robot.subsystems.Intake;
 
+import org.littletonrobotics.junction.AutoLog;
+
 public interface StretchIO {
-  
+  default public void updateInputs() {}
+
   default public void StretchOut(){}
+
   default public void FoldUp(){}
 
+  @AutoLog
   class StretchInputs {
     public double stretchingRotPerSec  = 0.0;
     public double stretchMotorVolts  = 0.0;
