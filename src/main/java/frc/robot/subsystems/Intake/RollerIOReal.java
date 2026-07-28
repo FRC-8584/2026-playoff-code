@@ -8,6 +8,7 @@ import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -15,27 +16,28 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.units.measure.Voltage;
 import frc.robot.Constants.DeviceIDs;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.subsystems.Intake.RollerIO.RollerInputs;
 
 /** Add your docs here. */
 public class RollerIOReal implements RollerIO {
   private final TalonFX rollerMotor;
-  private final Slot0Configs slot0Configs = new Slot0Configs();
-
-  private final VelocityVoltage velocityVoltage = new VelocityVoltage(0).withSlot(0);
 
   private final StatusSignal<AngularVelocity> rollingRotPerSec;
   private final StatusSignal<Voltage> rollerMotorVolts;
   private final StatusSignal<Current> statorCurrentAmps;
   private final StatusSignal<Current> supplyCurrentAmps;
-    
+
+  private final Slot0Configs slot0Configs = new Slot0Configs();
+  private final VelocityVoltage m_velocity = new VelocityVoltage(0);
 
   public RollerIOReal(boolean isInverted, boolean isCoast) {
-    this.rollerMotor = new TalonFX(DeviceIDs.kRollerMotorID);
-
+    this.rollerMotor = new TalonFX(DeviceIDs.RollerMotorID);
     TalonFXConfiguration config = new TalonFXConfiguration();
+
     config.MotorOutput.Inverted = isInverted ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
     config.MotorOutput.NeutralMode = isCoast ? NeutralModeValue.Coast : NeutralModeValue.Brake;
     config.CurrentLimits.SupplyCurrentLimitEnable = true;
@@ -79,8 +81,9 @@ public class RollerIOReal implements RollerIO {
   public void setVoltage(double voltage) {
     rollerMotor.setVoltage(voltage);
   }
+  
   @Override
   public void setVelocity(double velocityRPS) {
-    rollerMotor.setControl(velocityVoltage.withVelocity(velocityRPS));
+    rollerMotor.setControl(m_velocity.withVelocity(velocityRPS));
   }
 }

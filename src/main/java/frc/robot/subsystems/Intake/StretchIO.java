@@ -5,9 +5,9 @@ import org.littletonrobotics.junction.AutoLog;
 public interface StretchIO {
   default public void updateInputs() {}
 
-  default public void StretchOut(){}
+  default public void stretchOut(){}
 
-  default public void FoldUp(){}
+  default public void foldUp(){}
 
   @AutoLog
   class StretchInputs {
