@@ -28,7 +28,7 @@ public class RollerIOReal implements RollerIO {
     
 
     public RollerIOReal(boolean isInverted, boolean isCoast) {
-        this.rollerMotor = new TalonFX(DeviceIDs.kRollerMotorID);
+        this.rollerMotor = new TalonFX(DeviceIDs.RollerMotorID);
 
         TalonFXConfiguration config = new TalonFXConfiguration();
         config.MotorOutput.Inverted = isInverted ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
