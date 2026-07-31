@@ -52,5 +52,13 @@ public class StretchIOReal implements StretchIO {
     inputs.supplyCurrentAmps = supplyCurrentAmps.getValueAsDouble();
   }
 
-  
+  @Override
+  public void StretchOut() {
+    stretchMotor.set(0.2);
+  }
+
+  @Override
+  public void FoldUp() {
+
+  }
 }
