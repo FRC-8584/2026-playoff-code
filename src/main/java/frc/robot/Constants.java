@@ -43,9 +43,9 @@ public final class Constants {
     
     //Encoders
     public static final int RightFrontEncoderID = 9;
-    public static final int LeftFrontEncoderID = 10;
+    public static final int RightRearEncoderID = 10;
     public static final int LeftRearEncoderID = 11;
-    public static final int RightRearEncoderID = 12;
+    public static final int LeftFrontEncoderID = 12;
 
     //gyro
     public static final int GyroID = 13;
