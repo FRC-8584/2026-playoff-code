@@ -48,7 +48,7 @@ public class SwerveModule {
 
     driveOutput = state.speedMetersPerSecond / SwerveConstants.MAX_DRIVE_SPEED; // UNDONE
     turningOutput = pid.calculate(getEncoderAngle().getDegrees(), state.angle.getDegrees());
-    turningOutput = turningOutput / 90; 
+    turningOutput = turningOutput / 90; //除以90避免數值太大
     driveMotor.set(driveOutput*0.2);
     turningMotor.set(turningOutput);
   }
