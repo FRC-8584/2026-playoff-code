@@ -52,6 +52,9 @@ public final class Constants {
     
     //intake
     public static final int RollerMotorID = 14;
+
+    //transfer
+    public static final int TransferMotorID = 15;
   }
 
   public static class SwerveConstants {
@@ -126,6 +129,18 @@ public final class Constants {
     // Roller Constants
     public static final int STATOR_CURRENT_LIMIT_AMPS = 50; //not sure
     public static final int SUPPLY_CURRENT_LIMIT_AMPS = 50; //not sures
+  }
+
+  public static class TransferConstants {
+    public static final boolean TransferMotorInverted = false;
+    
+    public static TalonFXConfiguration TransferConfig(boolean inverted) {
+      TalonFXConfiguration config = new TalonFXConfiguration();
+      config.MotorOutput.Inverted = inverted ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+      config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+
+      return config;
+    }
   }
 
   public static class DeadBands {

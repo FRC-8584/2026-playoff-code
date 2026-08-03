@@ -5,10 +5,13 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.TransferConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.Move;
+import frc.robot.commands.Transport;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveDrive;
+import frc.robot.subsystems.Transfer;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -19,6 +22,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final SwerveDrive m_swervedrive = new SwerveDrive();
+  private final Transfer m_transfer = new Transfer(TransferConstants.TransferMotorInverted);
 
   private final Joystick joystick_1 = new Joystick(0);
 
@@ -29,8 +33,9 @@ public class RobotContainer {
       () ->joystick_1.getX(), 
       () -> joystick_1.getRawAxis(4)
     ));
-    
     configureBindings();
+
+    m_transfer.setDefaultCommand(new Transport(null))
   }
 
   
