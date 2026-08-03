@@ -32,14 +32,14 @@ public final class Constants {
     public static final int RightFrontDriveMotorID = 1;
     public static final int RightFrontTurningMotorID = 2;
 
-    public static final int LeftFrontDriveMotorID = 3;
-    public static final int LeftFrontTurningMotorID = 4;
+    public static final int RightRearDriveMotorID = 3;
+    public static final int RightRearTurningMotorID = 4;
     
     public static final int LeftRearDriveMotorID = 5;
     public static final int LeftRearTurningMotorID = 6;
 
-    public static final int RightRearDriveMotorID = 7;
-    public static final int RightRearTurningMotorID = 8;
+    public static final int LeftFrontDriveMotorID = 7;
+    public static final int LeftFrontTurningMotorID = 8;
     
     //Encoders
     public static final int RightFrontEncoderID = 9;
@@ -56,8 +56,8 @@ public final class Constants {
 
   public static class SwerveConstants {
     public static final double kDriveGearRatio = 8.14; // L1:8.14, L2:6.75, L3:6.12 (慢到快)
-    public static final double kWheelRadius = 1; //meter               UNDONE
-    public static final double WheelPerimeter = kWheelRadius * 2 * Math.PI; //meter
+    public static final double kWheelRadius = 2; //inch               
+    public static final double WheelPerimeter = kWheelRadius * 2 * Math.PI; //inch
     public static final double kSwerveWheelDistance_x = 0.68; //meter
     public static final double kSwerveWheelDistance_y = 0.68; //meter
     public static final double kRadian = 
@@ -71,10 +71,10 @@ public final class Constants {
     public static final Translation2d LeftRear_location   = new Translation2d(-kSwerveWheelDistance_x/2.0, kSwerveWheelDistance_y/2.0);
     public static final Translation2d RightRear_location  = new Translation2d(-kSwerveWheelDistance_x/2.0, -kSwerveWheelDistance_y/2.0); 
     
-    public static final double RIGHT_FRONT_OFFSET = -0.066406;
-    public static final double LEFT_FRONT_OFFSET  = -0.227539;
-    public static final double LEFT_REAR_OFFSET   =  0.447998;
-    public static final double RIGHT_REAR_OFFSET  = -0.728271;
+    public static final double RIGHT_FRONT_OFFSET = -0.058837;
+    public static final double LEFT_FRONT_OFFSET  =  0.277343;
+    public static final double LEFT_REAR_OFFSET   = -0.047119;
+    public static final double RIGHT_REAR_OFFSET  = -0.224121;
 
     public static final class SwerveConfigs {
       public static TalonFXConfiguration DriveMotorConfig(boolean inverted) {
@@ -98,7 +98,7 @@ public final class Constants {
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         config.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
         
-        config.Slot0.kP = 0.5;
+        config.Slot0.kP = 0.1;
         config.Slot0.kI = 0.0;
         config.Slot0.kD = 0.0;
         config.Slot0.kV = 0.0;

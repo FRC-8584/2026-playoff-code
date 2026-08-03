@@ -31,7 +31,7 @@ public class SwerveModule {
     turningMotor = new TalonFX(TurningMotorID);
     turningEncoder = new CANcoder(EncoderID);
     this.name = name;
-    pid = new PIDController(0.1, 0.0, 0.0); // Replace with actual PID values
+    pid = new PIDController(0.01, 0.0, 0.0); // Replace with actual PID values
     pid.enableContinuousInput(-180.0, 180.0);
 
     driveMotor.set(0);
@@ -48,13 +48,13 @@ public class SwerveModule {
 
     driveOutput = state.speedMetersPerSecond / SwerveConstants.MAX_DRIVE_SPEED; // UNDONE
     turningOutput = pid.calculate(getEncoderAngle().getDegrees(), state.angle.getDegrees());
-    turningOutput = turningOutput / 90; //除以90避免數值太大
+    //turningOutput = turningOutput / 90; //除以90避免數值太大
     driveMotor.set(driveOutput*0.2);
     turningMotor.set(turningOutput);
   }
 
   private Rotation2d getEncoderAngle() {
-    return Rotation2d.fromDegrees(turningEncoder.getPosition().getValueAsDouble() * 360.0);
+    return Rotation2d.fromDegrees(turningEncoder.getAbsolutePosition().getValueAsDouble() * 360.0);
   }
 
   public void printStatus() {

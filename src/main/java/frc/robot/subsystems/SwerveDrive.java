@@ -28,7 +28,7 @@ public class SwerveDrive extends SubsystemBase {
   private Pigeon2 gyro;
   private SwerveDriveKinematics m_Kinematics;
   
-  private boolean fieldRelative = true;
+  private boolean fieldRelative = false; //預設為false 因為07/31測試時沒有裝gyro
   private final StructArrayPublisher<SwerveModuleState> publisher;
   private SwerveModuleState[] moduleStates = new SwerveModuleState[] {
     new SwerveModuleState(),
@@ -46,17 +46,18 @@ public class SwerveDrive extends SubsystemBase {
     );
 
     this.RightFront_module = new SwerveModule(DeviceIDs.RightFrontDriveMotorID, DeviceIDs.RightFrontTurningMotorID, 
-    DeviceIDs.RightFrontEncoderID, SwerveConstants.RIGHT_FRONT_OFFSET, false, false, "RightFront");
-
-    this.LeftFront_module = new SwerveModule(DeviceIDs.LeftFrontDriveMotorID, DeviceIDs.LeftFrontTurningMotorID, 
-    DeviceIDs.LeftFrontEncoderID, SwerveConstants.LEFT_FRONT_OFFSET, false, false, "LeftFront");
-
-    this.LeftRear_module = new SwerveModule(DeviceIDs.LeftRearDriveMotorID, DeviceIDs.LeftRearTurningMotorID, 
-    DeviceIDs.LeftRearEncoderID, SwerveConstants.LEFT_REAR_OFFSET, false, false, "LeftRear");
+    DeviceIDs.RightFrontEncoderID, SwerveConstants.RIGHT_FRONT_OFFSET, true,true, "RightFront");
 
     this.RightRear_module = new SwerveModule(DeviceIDs.RightRearDriveMotorID, DeviceIDs.RightRearTurningMotorID, 
-    DeviceIDs.RightRearEncoderID, SwerveConstants.RIGHT_REAR_OFFSET, false, false, "RightRear");
+    DeviceIDs.RightRearEncoderID, SwerveConstants.RIGHT_REAR_OFFSET, true, true, "RightRear");
+    
+    this.LeftRear_module = new SwerveModule(DeviceIDs.LeftRearDriveMotorID, DeviceIDs.LeftRearTurningMotorID, 
+    DeviceIDs.LeftRearEncoderID, SwerveConstants.LEFT_REAR_OFFSET, false, true, "LeftRear");
 
+    this.LeftFront_module = new SwerveModule(DeviceIDs.LeftFrontDriveMotorID, DeviceIDs.LeftFrontTurningMotorID, 
+    DeviceIDs.LeftFrontEncoderID, SwerveConstants.LEFT_FRONT_OFFSET, false, true, "LeftFront");
+    
+    
     gyro = new Pigeon2(DeviceIDs.GyroID);
     gyro.getConfigurator().apply(SwerveConstants.SwerveConfigs.GyroConfig());
     gyro.reset();
@@ -75,7 +76,7 @@ public class SwerveDrive extends SubsystemBase {
   public void drive(double xInput, double yInput, double turn) {
     double Vx = xInput * SwerveConstants.MAX_DRIVE_SPEED;
     double Vy = yInput * SwerveConstants.MAX_DRIVE_SPEED;
-    double omega = turn * SwerveConstants.MAX_TURN_SPEED;
+    double omega = -turn * SwerveConstants.MAX_TURN_SPEED;
     Rotation2d robotHeading = getRotation();
     ChassisSpeeds Speeds;
     if(fieldRelative) {
