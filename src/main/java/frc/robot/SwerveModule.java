@@ -1,7 +1,5 @@
 package frc.robot;
 
-import static edu.wpi.first.units.Units.Rotation;
-
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -18,7 +16,6 @@ public class SwerveModule {
   private CANcoder turningEncoder;
 
   private PIDController pid;
-//  private SwerveModuleState currentState;
 
   private String name;
 
@@ -48,7 +45,6 @@ public class SwerveModule {
 
     driveOutput = state.speedMetersPerSecond / SwerveConstants.MAX_DRIVE_SPEED; // UNDONE
     turningOutput = pid.calculate(getEncoderAngle().getDegrees(), state.angle.getDegrees());
-    //turningOutput = turningOutput / 90; //除以90避免數值太大
     driveMotor.set(driveOutput*0.2);
     turningMotor.set(turningOutput);
   }

@@ -28,7 +28,7 @@ public class SwerveDrive extends SubsystemBase {
   private Pigeon2 gyro;
   private SwerveDriveKinematics m_Kinematics;
   
-  private boolean fieldRelative = false; //預設為false 因為07/31測試時沒有裝gyro
+  private boolean fieldRelative = true;
   private final StructArrayPublisher<SwerveModuleState> publisher;
   private SwerveModuleState[] moduleStates = new SwerveModuleState[] {
     new SwerveModuleState(),
@@ -55,7 +55,7 @@ public class SwerveDrive extends SubsystemBase {
     DeviceIDs.LeftRearEncoderID, SwerveConstants.LEFT_REAR_OFFSET, false, true, "LeftRear");
 
     this.LeftFront_module = new SwerveModule(DeviceIDs.LeftFrontDriveMotorID, DeviceIDs.LeftFrontTurningMotorID, 
-    DeviceIDs.LeftFrontEncoderID, SwerveConstants.LEFT_FRONT_OFFSET, false, true, "LeftFront");
+    DeviceIDs.LeftFrontEncoderID, SwerveConstants.LEFT_FRONT_OFFSET, true, true, "LeftFront");
     
     
     gyro = new Pigeon2(DeviceIDs.GyroID);
@@ -76,7 +76,7 @@ public class SwerveDrive extends SubsystemBase {
   public void drive(double xInput, double yInput, double turn) {
     double Vx = xInput * SwerveConstants.MAX_DRIVE_SPEED;
     double Vy = yInput * SwerveConstants.MAX_DRIVE_SPEED;
-    double omega = -turn * SwerveConstants.MAX_TURN_SPEED;
+    double omega = turn * SwerveConstants.MAX_TURN_SPEED;
     Rotation2d robotHeading = getRotation();
     ChassisSpeeds Speeds;
     if(fieldRelative) {

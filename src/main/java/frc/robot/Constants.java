@@ -71,11 +71,11 @@ public final class Constants {
     public static final Translation2d LeftRear_location   = new Translation2d(-kSwerveWheelDistance_x/2.0, kSwerveWheelDistance_y/2.0);
     public static final Translation2d RightRear_location  = new Translation2d(-kSwerveWheelDistance_x/2.0, -kSwerveWheelDistance_y/2.0); 
     
-    public static final double RIGHT_FRONT_OFFSET = -0.058837;
-    public static final double LEFT_FRONT_OFFSET  =  0.277343;
-    public static final double LEFT_REAR_OFFSET   = -0.047119;
-    public static final double RIGHT_REAR_OFFSET  = -0.224121;
-
+    public static final double RIGHT_FRONT_OFFSET = -0.070312;
+    public static final double RIGHT_REAR_OFFSET  = -0.227539;
+    public static final double LEFT_REAR_OFFSET   = -0.048339;
+    public static final double LEFT_FRONT_OFFSET  = -0.207763;
+    
     public static final class SwerveConfigs {
       public static TalonFXConfiguration DriveMotorConfig(boolean inverted) {
         TalonFXConfiguration config = new TalonFXConfiguration();
