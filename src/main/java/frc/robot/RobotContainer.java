@@ -22,7 +22,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final SwerveDrive m_swervedrive = new SwerveDrive();
-  private final Transfer m_transfer = new Transfer(TransferConstants.TransferMotorInverted);
+  private final Transfer m_transfer = new Transfer();
 
   private final Joystick joystick_1 = new Joystick(0);
   private final Joystick joystick_2 = new Joystick(1);

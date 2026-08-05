@@ -55,6 +55,10 @@ public final class Constants {
 
     //transfer
     public static final int TransferMotorID = 15;
+
+    //shooter
+    public static final int leader_ShooterLeftMotorID = 16;
+    public static final int follwer_ShooterRightMotorID = 17;
   }
 
   public static class SwerveConstants {
@@ -137,12 +141,27 @@ public final class Constants {
     public static TalonFXConfiguration TransferConfig(boolean inverted) {
       TalonFXConfiguration config = new TalonFXConfiguration();
       config.MotorOutput.Inverted = inverted ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
-      config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+      config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
       return config;
     }
   }
 
+  public static class ShooterConstants {
+    public static final boolean ShooterLeftMotorInverted = false;
+    public static final boolean ShooterRightMotorInverted = true;
+
+    public static final double SHOOT_VOLTAGE = 10.0; //待測
+
+    public static TalonFXConfiguration ShooterConfig(boolean inverted) {
+      TalonFXConfiguration config = new TalonFXConfiguration();
+      config.MotorOutput.Inverted = inverted ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+      config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+
+      return config;
+    }
+  }
+  
   public static class DeadBands {
     public static double deadband(double parameter, double deadband) {
       if(Math.abs(parameter) < deadband) parameter = 0.0;

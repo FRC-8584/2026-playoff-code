@@ -12,9 +12,9 @@ import frc.robot.Constants.TransferConstants;
 
 public class Transfer extends SubsystemBase {
   private TalonFX transferMotor;
-  public Transfer(boolean inverted) {
+  public Transfer() {
     this.transferMotor = new TalonFX(DeviceIDs.TransferMotorID);
-    transferMotor.getConfigurator().apply(TransferConstants.TransferConfig(inverted));
+    transferMotor.getConfigurator().apply(TransferConstants.TransferConfig(TransferConstants.TransferMotorInverted));
   }
 
   public void transporting() {
