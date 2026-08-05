@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -23,11 +27,34 @@ public final class Constants {
   }
 
   public static class IntakeConstants {
-    // public static final int RollerMotorID = 9;
-
     // Roller Constants
-    public static final int STATOR_CURRENT_LIMIT_AMPS = 80; //not sure
-    public static final int SUPPLY_CURRENT_LIMIT_AMPS = 80; //not sure
+    public static final int STATOR_CURRENT_LIMIT_AMPS = 50; //not sure
+    public static final int SUPPLY_CURRENT_LIMIT_AMPS = 50; //not sure
+
+    public static TalonFXConfiguration RollerConfig() {
+      TalonFXConfiguration config = new TalonFXConfiguration();
+
+      config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+      config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+      config.CurrentLimits.SupplyCurrentLimitEnable = true;
+      config.CurrentLimits.SupplyCurrentLimit = IntakeConstants.SUPPLY_CURRENT_LIMIT_AMPS;
+      config.CurrentLimits.StatorCurrentLimitEnable = true;
+      config.CurrentLimits.StatorCurrentLimit = IntakeConstants.STATOR_CURRENT_LIMIT_AMPS;
+      
+      return config;
+    }
+
+    public static TalonFXConfiguration StretchConfig() {
+      TalonFXConfiguration config = new TalonFXConfiguration();
+      config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+      config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+      config.CurrentLimits.SupplyCurrentLimitEnable = true;
+      config.CurrentLimits.SupplyCurrentLimit = IntakeConstants.SUPPLY_CURRENT_LIMIT_AMPS;
+      config.CurrentLimits.StatorCurrentLimitEnable = true;
+      config.CurrentLimits.StatorCurrentLimit = IntakeConstants.STATOR_CURRENT_LIMIT_AMPS;
+      
+      return config;
+    }
   }
 
 }

@@ -7,6 +7,7 @@ package frc.robot.subsystems.Intake;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -25,6 +26,8 @@ public class RollerIOReal implements RollerIO {
     private final StatusSignal<Voltage> rollerMotorVolts;
     private final StatusSignal<Current> statorCurrentAmps;
     private final StatusSignal<Current> supplyCurrentAmps;
+
+    private VelocityVoltage velocityVoltage = new VelocityVoltage(0.0);
     
 
     public RollerIOReal(boolean isInverted, boolean isCoast) {
@@ -66,6 +69,6 @@ public class RollerIOReal implements RollerIO {
 
     @Override
     public void setVelocity(double velocityRPS) {
-        rollerMotor.set(velocityRPS);
+        rollerMotor.setControl(velocityVoltage.withVelocity(velocityRPS));
     }
 }

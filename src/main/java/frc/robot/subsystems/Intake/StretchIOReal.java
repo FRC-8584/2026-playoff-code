@@ -54,11 +54,11 @@ public class StretchIOReal implements StretchIO {
 
   @Override
   public void StretchOut() {
-    stretchMotor.set(0.2);
+    stretchMotor.set(0.3);
   }
 
   @Override
   public void FoldUp() {
-
+    stretchMotor.set(-0.2);
   }
 }
