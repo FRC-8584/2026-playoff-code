@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.Supplier;
+
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.math.MathUtil;
@@ -67,6 +69,9 @@ public class SwerveDrive extends SubsystemBase {
         .getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
 
     Shuffleboard.getTab("Robot Heading").add("Gyro", gyro);
+
+    Shuffleboard.getTab("Drive Method")
+    .addBoolean("Field Relative", this::isFieldRelative);
   }
 
   public Rotation2d getRotation() {
