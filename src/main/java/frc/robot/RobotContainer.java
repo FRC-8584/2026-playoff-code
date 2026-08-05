@@ -8,13 +8,16 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.TransferConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.Move;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.Transport;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.Transfer;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 
@@ -23,11 +26,17 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final SwerveDrive m_swervedrive = new SwerveDrive();
   private final Transfer m_transfer = new Transfer();
+  private final Shooter m_shooter = new Shooter();
 
   private final Joystick joystick_1 = new Joystick(0);
   private final Joystick joystick_2 = new Joystick(1);
 
   public RobotContainer() {
+    configureDefaults();
+    configureBindings();
+  }
+
+  private void configureDefaults() {
     // Move
     m_swervedrive.setDefaultCommand(new Move(
       m_swervedrive, 
@@ -35,16 +44,15 @@ public class RobotContainer {
       () ->joystick_1.getX(), 
       () -> joystick_1.getRawAxis(4)
     ));
-    configureBindings();
-
-    // Transport
-    new JoystickButton(joystick_2, 1).whileTrue(new Transport(m_transfer));
   }
 
-  
   private void configureBindings() {
+    // Field Relative
     new JoystickButton(joystick_1, 5).onTrue(Commands.runOnce(() -> m_swervedrive.setFieldRelative(false), m_swervedrive));
     new JoystickButton(joystick_1, 6).onTrue(Commands.runOnce(() -> m_swervedrive.setFieldRelative(true), m_swervedrive));
+  
+    // Transport + Shooter
+    new JoystickButton(joystick_2, 1).whileTrue(new ParallelCommandGroup(new Transport(m_transfer), new Shoot(m_shooter)));
   }
 
   /**

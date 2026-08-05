@@ -153,10 +153,19 @@ public final class Constants {
 
     public static final double SHOOT_VOLTAGE = 10.0; //待測
 
-    public static TalonFXConfiguration ShooterConfig(boolean inverted) {
+    public static TalonFXConfiguration ShooterConfig() {
       TalonFXConfiguration config = new TalonFXConfiguration();
-      config.MotorOutput.Inverted = inverted ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+      
+      config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
       config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+
+      // PID values is still undetermined, need to be tuned
+      config.Slot0.kP = 0.1;
+      config.Slot0.kI = 0.0;
+      config.Slot0.kD = 0.0;
+      config.Slot0.kS = 0.0;
+      config.Slot0.kV = 0.0;
+      config.Slot0.kA = 0.0;
 
       return config;
     }
