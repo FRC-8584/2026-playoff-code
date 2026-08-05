@@ -25,8 +25,10 @@ public class RobotContainer {
   private final Transfer m_transfer = new Transfer(TransferConstants.TransferMotorInverted);
 
   private final Joystick joystick_1 = new Joystick(0);
+  private final Joystick joystick_2 = new Joystick(1);
 
   public RobotContainer() {
+    // Move
     m_swervedrive.setDefaultCommand(new Move(
       m_swervedrive, 
       () -> joystick_1.getY(), 
@@ -35,7 +37,8 @@ public class RobotContainer {
     ));
     configureBindings();
 
-    m_transfer.setDefaultCommand(new Transport(null))
+    // Transport
+    new JoystickButton(joystick_2, 1).whileTrue(new Transport(m_transfer));
   }
 
   
