@@ -46,13 +46,29 @@ public final class Constants {
 
     public static TalonFXConfiguration StretchConfig() {
       TalonFXConfiguration config = new TalonFXConfiguration();
-      config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-      config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+
+      config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive; //正反轉
+      config.MotorOutput.NeutralMode = NeutralModeValue.Coast; // idle mode時的模式
+
+      config.SoftwareLimitSwitch.ForwardSoftLimitEnable = true; //啟用前方軟體限制
+      config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 0.0; //前
+      
+      //電流限制
       config.CurrentLimits.SupplyCurrentLimitEnable = true;
       config.CurrentLimits.SupplyCurrentLimit = IntakeConstants.SUPPLY_CURRENT_LIMIT_AMPS;
       config.CurrentLimits.StatorCurrentLimitEnable = true;
       config.CurrentLimits.StatorCurrentLimit = IntakeConstants.STATOR_CURRENT_LIMIT_AMPS;
-      
+
+      // stretch out pid
+      config.Slot0.kP = 0.1;
+      config.Slot0.kI = 0.0;
+      config.Slot0.kD = 0.0;
+
+      // fold up pid
+      config.Slot1.kP = 0.1;
+      config.Slot1.kI = 0.0;  
+      config.Slot1.kD = 0.0;
+
       return config;
     }
   }

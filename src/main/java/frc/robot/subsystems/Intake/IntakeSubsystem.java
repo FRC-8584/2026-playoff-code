@@ -4,8 +4,13 @@
 
 package frc.robot.subsystems.Intake;
 
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.ControlModeValue;
 
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DeviceIDs;
 import frc.robot.Constants.IntakeConstants;
@@ -13,18 +18,42 @@ import frc.robot.Constants.IntakeConstants;
 public class IntakeSubsystem extends SubsystemBase {
   private final TalonFX rollerMotor;
   private final TalonFX stretchMotor;
-  
+
+  private double position;
+  private final PositionVoltage m_position;
+
   public IntakeSubsystem() {
     rollerMotor = new TalonFX(DeviceIDs.RollerMotorID);
     stretchMotor = new TalonFX(DeviceIDs.StretchMotorID);
     rollerMotor.getConfigurator().apply(IntakeConstants.RollerConfig());
     stretchMotor.getConfigurator().apply(IntakeConstants.StretchConfig());
+    rollerMotor.clearStickyFaults();
+    stretchMotor.clearStickyFaults();
+    m_position = new PositionVoltage(0.0);
   }
 
-  
+  public void runRoller(Double volts) {
+    rollerMotor.setVoltage(volts);
+    
+  }
+ 
+  public void stopRoller() {
+    rollerMotor.set(0.0);
+  }
+ 
+  public void stretchOut() {
+    m_position.Slot = 0;
+    stretchMotor.setControl(m_position.withPosition(position));
+  }
+ 
+  public void foldUp() {
+    m_position.Slot = 1;
+    stretchMotor.setControl(m_position.withPosition(0));
+  }
+
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    position = stretchMotor.getPosition().getValueAsDouble();
   }
 }
