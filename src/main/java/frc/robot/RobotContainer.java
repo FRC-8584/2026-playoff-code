@@ -28,6 +28,11 @@ public class RobotContainer {
   private final Joystick joystick_2 = new Joystick(1);
 
   public RobotContainer() {
+    //configureDefaults();
+    configureBindings();
+  }
+
+  private void configureDefaults() {
     // Move
     m_swervedrive.setDefaultCommand(new Move(
       m_swervedrive, 
@@ -35,16 +40,15 @@ public class RobotContainer {
       () ->joystick_1.getX(), 
       () -> joystick_1.getRawAxis(4)
     ));
-    configureBindings();
-
-    // Transport
-    new JoystickButton(joystick_2, 1).whileTrue(new Transport(m_transfer));
   }
 
-  
   private void configureBindings() {
-    new JoystickButton(joystick_1, 5).onTrue(Commands.runOnce(() -> m_swervedrive.setFieldRelative(false), m_swervedrive));
+    // Field Relative
+    /*new JoystickButton(joystick_1, 5).onTrue(Commands.runOnce(() -> m_swervedrive.setFieldRelative(false), m_swervedrive));
     new JoystickButton(joystick_1, 6).onTrue(Commands.runOnce(() -> m_swervedrive.setFieldRelative(true), m_swervedrive));
+    */
+    // Transport
+    new JoystickButton(joystick_2, 1).whileTrue(new Transport(m_transfer));
   }
 
   /**

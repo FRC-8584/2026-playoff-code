@@ -132,12 +132,12 @@ public final class Constants {
   }
 
   public static class TransferConstants {
-    public static final boolean TransferMotorInverted = false;
+    public static final boolean TransferMotorInverted = true;
     
     public static TalonFXConfiguration TransferConfig(boolean inverted) {
       TalonFXConfiguration config = new TalonFXConfiguration();
       config.MotorOutput.Inverted = inverted ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
-      config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+      config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
       return config;
     }
