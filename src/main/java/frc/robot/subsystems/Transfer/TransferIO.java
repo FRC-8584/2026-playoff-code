@@ -22,7 +22,8 @@ public interface TransferIO {
     public class TransferIOInputs {
         public double transferRPS = 0.0;
         public double transferAppliedVoltage = 0.0;
-        public double transferCurrentAmp = 0.0;
+        public double transferSuppliedAmp = 0.0;
+        public double transferSatorAmp = 0.0;
     }
 
 }
