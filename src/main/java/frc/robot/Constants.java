@@ -30,6 +30,7 @@ public final class Constants {
     // Roller Constants
     public static final int STATOR_CURRENT_LIMIT_AMPS = 50; //not sure
     public static final int SUPPLY_CURRENT_LIMIT_AMPS = 50; //not sure
+    public static final double LIMIT_ROTATION = 3.0; //not sure
 
     public static TalonFXConfiguration RollerConfig() {
       TalonFXConfiguration config = new TalonFXConfiguration();
@@ -50,8 +51,11 @@ public final class Constants {
       config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive; //正反轉
       config.MotorOutput.NeutralMode = NeutralModeValue.Coast; // idle mode時的模式
 
-      config.SoftwareLimitSwitch.ForwardSoftLimitEnable = true; //啟用前方軟體限制
-      config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 0.0; //前
+      //軟體限位
+      config.SoftwareLimitSwitch.ForwardSoftLimitEnable = true; 
+      config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 1.0; 
+      config.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+      config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0.0;
       
       //電流限制
       config.CurrentLimits.SupplyCurrentLimitEnable = true;
@@ -60,7 +64,7 @@ public final class Constants {
       config.CurrentLimits.StatorCurrentLimit = IntakeConstants.STATOR_CURRENT_LIMIT_AMPS;
 
       // stretch out pid
-      config.Slot0.kP = 0.1;
+      config.Slot0.kP = 0.01;
       config.Slot0.kI = 0.0;
       config.Slot0.kD = 0.0;
 

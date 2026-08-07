@@ -6,11 +6,8 @@ package frc.robot.subsystems.Intake;
 
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.ControlModeValue;
 
-import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DeviceIDs;
 import frc.robot.Constants.IntakeConstants;
@@ -34,7 +31,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void runRoller(Double volts) {
     rollerMotor.setVoltage(volts);
-    
   }
  
   public void stopRoller() {
@@ -43,7 +39,7 @@ public class IntakeSubsystem extends SubsystemBase {
  
   public void stretchOut() {
     m_position.Slot = 0;
-    stretchMotor.setControl(m_position.withPosition(position));
+    stretchMotor.setControl(m_position.withPosition(IntakeConstants.LIMIT_ROTATION));
   }
  
   public void foldUp() {
@@ -51,9 +47,14 @@ public class IntakeSubsystem extends SubsystemBase {
     stretchMotor.setControl(m_position.withPosition(0));
   }
 
+  public void slide(double y) {
+    m_position.Slot = 0;
+    stretchMotor.setControl(m_position.withPosition(y * IntakeConstants.LIMIT_ROTATION));
+  }
 
   @Override
   public void periodic() {
     position = stretchMotor.getPosition().getValueAsDouble();
+    SmartDashboard.putNumber("Position", position);
   }
 }
