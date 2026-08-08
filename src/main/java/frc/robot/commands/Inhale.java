@@ -23,7 +23,7 @@ public class Inhale extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intakeSubsystem.runRoller(10.0); //need to be tuned later
+    m_intakeSubsystem.runRoller(3.0);
   }
 
   // Called once the command ends or is interrupted.
