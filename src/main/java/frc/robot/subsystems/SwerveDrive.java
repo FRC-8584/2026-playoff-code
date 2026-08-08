@@ -9,12 +9,18 @@ import java.util.function.Supplier;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.estimator.PoseEstimator;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SwerveModule;
+import frc.robot.tools.LimelightHelpers;
 import frc.robot.Constants.DeviceIDs;
 import frc.robot.Constants.SwerveConstants;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -29,6 +35,7 @@ public class SwerveDrive extends SubsystemBase {
 
   private Pigeon2 gyro;
   private SwerveDriveKinematics m_Kinematics;
+  private SwerveDrivePoseEstimator poseEstimator;
   
   private boolean fieldRelative = true;
   private final StructArrayPublisher<SwerveModuleState> publisher;
@@ -59,24 +66,47 @@ public class SwerveDrive extends SubsystemBase {
     this.LeftFront_module = new SwerveModule(DeviceIDs.LeftFrontDriveMotorID, DeviceIDs.LeftFrontTurningMotorID, 
     DeviceIDs.LeftFrontEncoderID, SwerveConstants.LEFT_FRONT_OFFSET, true, true, "LeftFront");
     
-    
     gyro = new Pigeon2(DeviceIDs.GyroID);
     gyro.getConfigurator().apply(SwerveConstants.SwerveConfigs.GyroConfig());
     gyro.reset();
     gyro.setYaw(0.0);
 
-    publisher = NetworkTableInstance.getDefault()
-        .getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
+    poseEstimator = new SwerveDrivePoseEstimator(m_Kinematics, getRotation(), getModulePositions(), new Pose2d(0, 0, getRotation()));
 
+    publisher = NetworkTableInstance.getDefault().getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
     Shuffleboard.getTab("Robot Heading").add("Gyro", gyro);
-
-    Shuffleboard.getTab("Drive Method")
-    .addBoolean("Field Relative", this::isFieldRelative);
+    Shuffleboard.getTab("Drive Method").addBoolean("Field Relative", this::isFieldRelative);
   }
 
   public Rotation2d getRotation() {
     return Rotation2d.fromDegrees(MathUtil.inputModulus(-gyro.getYaw().getValueAsDouble(), -180.0, 180.0));
   }
+
+  public SwerveModulePosition[] getModulePositions() {
+    return new SwerveModulePosition[] {
+      RightFront_module.getPosition(), 
+      LeftFront_module.getPosition(),
+      LeftRear_module.getPosition(),
+      RightRear_module.getPosition()
+    };
+  }
+
+  public void resetPose(Pose2d pose) {
+    poseEstimator.resetPose(pose);
+  }
+
+  public void updateOdometry() {
+    poseEstimator.update(getRotation(), getModulePositions());
+
+    if(LimelightHelpers.getTV("limelight")) {
+      poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose2d("limelight"), Timer.getFPGATimestamp());
+    }
+  }
+
+  public void toTarget() {
+
+  }
+
 
   public void drive(double xInput, double yInput, double turn) {
     double Vx = xInput * SwerveConstants.MAX_DRIVE_SPEED;
@@ -114,5 +144,11 @@ public class SwerveDrive extends SubsystemBase {
     LeftRear_module.printStatus();
     RightRear_module.printStatus();
     publisher.set(moduleStates);
+
+    poseEstimator.update(getRotation(), getModulePositions());
+    var vision = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+    if (vision.tagCount > 0 && vision.timestampSeconds > 0.0) {
+      poseEstimator.addVisionMeasurement(vision.pose,vision.timestampSeconds);
+    }
   }
 }

@@ -13,6 +13,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -56,8 +57,10 @@ public final class Constants {
 
   public static class SwerveConstants {
     public static final double kDriveGearRatio = 8.14; // L1:8.14, L2:6.75, L3:6.12 (慢到快)
-    public static final double kWheelRadius = 2; //inch               
+    public static final double kWheelRadius = 2.0; //inch  
+    public static final double kWheelRadiusMeters = Units.inchesToMeters(2.0);
     public static final double WheelPerimeter = kWheelRadius * 2 * Math.PI; //inch
+    public static final double kWheelCircumferenceMeters = 2.0 * Math.PI * kWheelRadiusMeters;
     public static final double kSwerveWheelDistance_x = 0.68; //meter
     public static final double kSwerveWheelDistance_y = 0.68; //meter
     public static final double kRadian = 
