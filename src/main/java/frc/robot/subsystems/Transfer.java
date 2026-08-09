@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DeviceIDs;
@@ -12,17 +14,21 @@ import frc.robot.Constants.TransferConstants;
 
 public class Transfer extends SubsystemBase {
   private TalonFX transferMotor;
+  private SparkMax transferRollerMotor;
   public Transfer(boolean inverted) {
     this.transferMotor = new TalonFX(DeviceIDs.TransferMotorID);
+    this.transferRollerMotor = new SparkMax(DeviceIDs.TransferRollerMotorID, MotorType.kBrushless);
     transferMotor.getConfigurator().apply(TransferConstants.TransferConfig(inverted));
   }
 
   public void transporting() {
-    transferMotor.set(0.5);
+    transferMotor.set(0.4);
+    transferRollerMotor.set(0.4);
   }
 
   public void stop() {
     transferMotor.set(0.0);
+    transferRollerMotor.set(0.0);
   }
 
   @Override
