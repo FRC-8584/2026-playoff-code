@@ -52,9 +52,10 @@ public final class Constants {
     
     //intake
     public static final int RollerMotorID = 14;
+    public static final int StretchMotorID = 15;
 
     //transfer
-    public static final int TransferMotorID = 15;
+    public static final int TransferMotorID = 16;
   }
 
   public static class SwerveConstants {
