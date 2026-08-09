@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SwerveModule;
 import frc.robot.tools.LimelightHelpers;
 import frc.robot.Constants.DeviceIDs;
+import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.SwerveConstants;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -36,6 +37,7 @@ public class SwerveDrive extends SubsystemBase {
   private Pigeon2 gyro;
   private SwerveDriveKinematics m_Kinematics;
   private SwerveDrivePoseEstimator poseEstimator;
+  private double pose[];
   
   private boolean fieldRelative = true;
   private final StructArrayPublisher<SwerveModuleState> publisher;
@@ -98,14 +100,38 @@ public class SwerveDrive extends SubsystemBase {
   public void updateOdometry() {
     poseEstimator.update(getRotation(), getModulePositions());
 
-    if(LimelightHelpers.getTV("limelight")) {
-      poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose2d("limelight"), Timer.getFPGATimestamp());
+    if(LimelightHelpers.getTV(LimelightConstants.LIMELIGHT_NAME)) {
+      poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose2d(LimelightConstants.LIMELIGHT_NAME), Timer.getFPGATimestamp());
     }
   }
 
-  public void toTarget() {
-
+  public Pose2d getPose() {
+    return poseEstimator.getEstimatedPosition();
   }
+
+  public void driveRobotRelative(ChassisSpeeds speeds) {
+    SwerveModuleState[] states = m_Kinematics.toSwerveModuleStates(speeds);
+
+    RightFront_module.setState(states[0]);
+    LeftFront_module.setState(states[1]);
+    LeftRear_module.setState(states[2]);
+    RightRear_module.setState(states[3]);
+  }
+
+  /*public void toTarget() {
+    if(LimelightHelpers.getTV(LimelightConstants.LIMELIGHT_NAME)) {
+      var targetAngle = LimelightHelpers.getTX(LimelightConstants.LIMELIGHT_NAME);
+      if(targetAngle < 3.0 && targetAngle > -3.0) {
+        pose = LimelightHelpers.getTargetPose_CameraSpace(LimelightConstants.LIMELIGHT_NAME);
+        
+      }
+      else {
+        drive(0, 0, targetAngle/30.0);
+      }
+
+
+    }
+  }*/
 
 
   public void drive(double xInput, double yInput, double turn) {
@@ -146,8 +172,8 @@ public class SwerveDrive extends SubsystemBase {
     publisher.set(moduleStates);
 
     poseEstimator.update(getRotation(), getModulePositions());
-    var vision = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
-    if (vision.tagCount > 0 && vision.timestampSeconds > 0.0) {
+    var vision = LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.LIMELIGHT_NAME);
+    if(vision.tagCount > 0 && vision.timestampSeconds > 0.0 && Math.abs(gyro.getAngularVelocityZWorld().getValueAsDouble()) < 360.0 ) {
       poseEstimator.addVisionMeasurement(vision.pose,vision.timestampSeconds);
     }
   }

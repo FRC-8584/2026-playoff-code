@@ -12,6 +12,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 
@@ -65,7 +66,7 @@ public final class Constants {
     public static final double kSwerveWheelDistance_y = 0.68; //meter
     public static final double kRadian = 
     Math.sqrt(Math.pow(kSwerveWheelDistance_x/2.0, 2) + Math.pow(kSwerveWheelDistance_y/2.0, 2)); //meter
-    
+
     public static final double MAX_DRIVE_SPEED = 1.0; //m/s                UNDONE
     public static final double MAX_TURN_SPEED = MAX_DRIVE_SPEED / kRadian; //rad/s
     
@@ -125,12 +126,41 @@ public final class Constants {
     }
   }
 
+  public static class LimelightConstants {
+    public static final String LIMELIGHT_NAME = "limelight";
+    
+    public static class PIDs {
+      public static final PIDController x_pid = new PIDController(1.0, 0, 0.1);
+      public static final PIDController y_pid = new PIDController(2.5, 2.0*1e-3, 0.01);
+      public static final PIDController turn_pid = new PIDController(0.3, 0, 0);
+    }
+    
+  }
+
   public static class IntakeConstants {
     // Roller Constants
     public static final int STATOR_CURRENT_LIMIT_AMPS = 50; //not sure
     public static final int SUPPLY_CURRENT_LIMIT_AMPS = 50; //not sures
   }
 
+  public static final class FieldConstants {
+    public static final class HubConstants {
+      // Always blue origin
+      public static final Translation2d BLUE_HUB_CENTER = new Translation2d(4.625, 4.034);
+
+      public static final Translation2d RED_HUB_CENTER = new Translation2d(11.915, 4.034);
+
+      // 機器人「中心」到 Hub 中心的射擊距離 r
+      public static final double SHOOTING_RADIUS_METERS = 2.50; //needed to be tuned later
+
+      public static final double TURN_KP = 0.01; /* tune */
+      public static final double DRIVE_KP = 0.09; /* tune */
+
+      public static final double ANGLE_TOLERANCE_RAD = Units.degreesToRadians(2.5);
+      public static final double DISTANCE_TOLERANCE_METERS = 0.08;
+    }
+  }
+  
   public static class DeadBands {
     public static double deadband(double parameter, double deadband) {
       if(Math.abs(parameter) < deadband) parameter = 0.0;
