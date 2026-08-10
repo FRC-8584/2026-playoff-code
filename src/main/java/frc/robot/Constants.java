@@ -56,7 +56,9 @@ public final class Constants {
 
     //transfer
     public static final int TransferMotorID = 16;
-    public static final int TransferRollerMotorID = 17;
+    
+    //shooters
+    public static final int ShooterFeederMotorID = 17;
   }
 
   public static class SwerveConstants {
