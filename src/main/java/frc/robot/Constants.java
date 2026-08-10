@@ -52,14 +52,15 @@ public final class Constants {
     
     //intake
     public static final int RollerMotorID = 14;
+    public static final int StretchMotorID = 15;
 
     //transfer
-    public static final int TransferMotorID = 15;
-    public static final int TransferRollerMotorID = 16;
+    public static final int TransferMotorID = 16;
 
     //shooter
-    public static final int leader_ShooterLeftMotorID = 17;
-    public static final int follwer_ShooterRightMotorID = 18;
+    public static final int ShooterFeederMotorID = 17;
+    public static final int leader_ShooterLeftMotorID = 18;
+    public static final int follwer_ShooterRightMotorID = 19;
   }
 
   public static class SwerveConstants {
@@ -149,18 +150,35 @@ public final class Constants {
   }
 
   public static class ShooterConstants {
-    public static final boolean ShooterLeftMotorInverted = false;
-    public static final boolean ShooterRightMotorInverted = true;
+    public static final boolean ShooterMotorInverted = true;
+    public static final boolean ShooterFeederMotorInverted = false;
 
-    public static final double SHOOT_VOLTAGE = 10.0; //待測
-
-    public static TalonFXConfiguration ShooterConfig() {
+    public static final double SHOOT_VOLTAGE = 6.5;
+    public static final double FEED_VOLTAGE = 6.0; 
+    public static final double ERROR_TOLERANCE_RPM = 100.0;
+    public static TalonFXConfiguration ShooterConfig(boolean inverted) {
       TalonFXConfiguration config = new TalonFXConfiguration();
       
-      config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+      config.MotorOutput.Inverted = inverted ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
       config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
       // PID values is still undetermined, need to be tuned
+      config.Slot0.kP = 0.1;
+      config.Slot0.kI = 0.0;
+      config.Slot0.kD = 0.0;
+      config.Slot0.kS = 0.34204;
+      config.Slot0.kV = 0.11977;
+      config.Slot0.kA = 0.006;
+
+      return config;
+    }
+
+    public static TalonFXConfiguration FeederConfig(boolean inverted) {
+      TalonFXConfiguration config = new TalonFXConfiguration();
+
+      config.MotorOutput.Inverted = inverted ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+      config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+
       config.Slot0.kP = 0.1;
       config.Slot0.kI = 0.0;
       config.Slot0.kD = 0.0;
