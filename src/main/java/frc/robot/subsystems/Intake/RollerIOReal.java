@@ -73,17 +73,15 @@ public class RollerIOReal implements RollerIO {
     slot0Configs.withKD(kd);
     slot0Configs.withKS(ks);
     slot0Configs.withKV(kv);
-
-    rollerMotor.getConfigurator().apply(slot0Configs);
   }
+    @Override
+    public void setVelocity(double velocityRPS) {
+        rollerMotor.setControl(velocityVoltage.withVelocity(velocityRPS));
+    }
+    rollerMotor.getConfigurator().apply(slot0Configs);
 
   @Override
   public void setVoltage(double voltage) {
     rollerMotor.setVoltage(voltage);
-  }
-  
-  @Override
-  public void setVelocity(double velocityRPS) {
-    rollerMotor.setControl(m_velocity.withVelocity(velocityRPS));
   }
 }

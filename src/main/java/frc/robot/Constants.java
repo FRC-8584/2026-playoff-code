@@ -54,6 +54,63 @@ public final class Constants {
     
     //intake
     public static final int RollerMotorID = 14;
+    public static final int StretchMotorID = 15; 
+  }
+
+  public static class IntakeConstants {
+    // Roller Constants
+    public static final int STATOR_CURRENT_LIMIT_AMPS = 50; //not sure
+    public static final int SUPPLY_CURRENT_LIMIT_AMPS = 50; //not sure
+    public static final double LIMIT_ROTATION = 60.0;
+    public static final double ROLLING_VOLTAGE = 3.5;
+
+    public static TalonFXConfiguration RollerConfig() {
+      TalonFXConfiguration config = new TalonFXConfiguration();
+
+      config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+      config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+      config.CurrentLimits.SupplyCurrentLimitEnable = true;
+      config.CurrentLimits.SupplyCurrentLimit = IntakeConstants.SUPPLY_CURRENT_LIMIT_AMPS;
+      config.CurrentLimits.StatorCurrentLimitEnable = true;
+      config.CurrentLimits.StatorCurrentLimit = IntakeConstants.STATOR_CURRENT_LIMIT_AMPS;
+
+      config.Slot0.kP = 0.01;
+      config.Slot0.kI = 0.0;
+      config.Slot0.kD = 0.0;
+      config.Slot0.kS = 0.19791;
+      config.Slot0.kV = 0.11546;
+      config.Slot0.kA = 0.001;
+      
+      return config;
+    }
+
+    public static TalonFXConfiguration StretchConfig() {
+      TalonFXConfiguration config = new TalonFXConfiguration();
+
+      config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; //正反轉
+      config.MotorOutput.NeutralMode = NeutralModeValue.Coast; // idle mode時的模式
+
+      //軟體限位
+      config.SoftwareLimitSwitch.ForwardSoftLimitEnable = true; 
+      config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 60.0; 
+      config.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+      config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0.0;
+      
+      //電流限制
+      config.CurrentLimits.SupplyCurrentLimitEnable = true;
+      config.CurrentLimits.SupplyCurrentLimit = IntakeConstants.SUPPLY_CURRENT_LIMIT_AMPS;
+      config.CurrentLimits.StatorCurrentLimitEnable = true;
+      config.CurrentLimits.StatorCurrentLimit = IntakeConstants.STATOR_CURRENT_LIMIT_AMPS;
+
+      // stretch out pid
+      config.Slot1.kP = 0.01;
+      config.Slot1.kI = 0.0;
+      config.Slot1.kD = 0.0;
+      config.Slot1.kS = 0.0;
+      config.Slot1.kV = 0.12;
+      config.Slot1.kA = 0.0;
+
+      return config;
   }
 
   public static class SwerveConstants {
@@ -134,7 +191,6 @@ public final class Constants {
       public static final PIDController y_pid = new PIDController(2.5, 2.0*1e-3, 0.01);
       public static final PIDController turn_pid = new PIDController(0.3, 0, 0);
     }
-    
   }
 
   public static class IntakeConstants {
@@ -167,5 +223,4 @@ public final class Constants {
       return parameter;
     }
   }
-
 }
