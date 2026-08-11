@@ -62,6 +62,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public void periodic() {
     position = stretchMotor.getPosition().getValueAsDouble();
     SmartDashboard.putNumber("Position", position);
+    SmartDashboard.putNumber("Intake Roller Velocity", rollerMotor.getVelocity().getValueAsDouble());
     updateNetworkTable();
   }
 }

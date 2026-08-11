@@ -22,9 +22,9 @@ public class Shoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shooter.runShooterVoltage();
+    m_shooter.runShooterVelocity();
     if(m_shooter.isAtTarget()) {
-      m_shooter.runFeederVoltage();
+      m_shooter.runFeederVelocity();
     }
   }
 

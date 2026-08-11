@@ -126,7 +126,8 @@ public class SwerveDrive extends SubsystemBase {
     RightRear_module.setState(states[3]);
   }
 
-  /*public void toTarget() {
+  public void toTarget() {
+    poseEstimator.addVisionMeasurement(getPose(), 0, null);
     if(LimelightHelpers.getTV(LimelightConstants.LIMELIGHT_NAME)) {
       var targetAngle = LimelightHelpers.getTX(LimelightConstants.LIMELIGHT_NAME);
       if(targetAngle < 3.0 && targetAngle > -3.0) {
@@ -139,7 +140,7 @@ public class SwerveDrive extends SubsystemBase {
 
 
     }
-  }*/
+  }
 
 
   public void drive(double xInput, double yInput, double turn) {

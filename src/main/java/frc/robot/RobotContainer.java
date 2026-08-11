@@ -9,14 +9,13 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Inhale;
 import frc.robot.commands.Stretch;
+import frc.robot.commands.swerve.Move;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.Transfer.TransferSubsystem;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.Joystick;
-
-import frc.robot.commands.Move;
 import frc.robot.commands.Shoot;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Shooter;

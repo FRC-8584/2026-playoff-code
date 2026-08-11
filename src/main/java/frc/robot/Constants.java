@@ -15,6 +15,7 @@ import com.ctre.phoenix6.signals.SensorDirectionValue;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.tools.LimelightHelpers;
 
 
 public final class Constants {
@@ -57,8 +58,8 @@ public final class Constants {
 
     //shooter
     public static final int ShooterFeederMotorID = 17;
-    public static final int leader_ShooterLeftMotorID = 18;
-    public static final int follwer_ShooterRightMotorID = 19;
+    public static final int ShooterLeftMotorID = 18;
+    public static final int ShooterRightMotorID = 19;
   }
 
 
@@ -146,6 +147,7 @@ public final class Constants {
 
       config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
       config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+      config.Feedback.SensorToMechanismRatio = 9.0;
       config.CurrentLimits.SupplyCurrentLimitEnable = true;
       config.CurrentLimits.SupplyCurrentLimit = IntakeConstants.SUPPLY_CURRENT_LIMIT_AMPS;
       config.CurrentLimits.StatorCurrentLimitEnable = true;
@@ -199,18 +201,20 @@ public final class Constants {
 
 
   public static class ShooterConstants {
-    public static final boolean ShooterMotorInverted = true;
+    public static final boolean ShooterLeftMotorInverted = true;
+    public static final boolean ShooterRightMotorInverted = false;
     public static final boolean ShooterFeederMotorInverted = false;
-    public static final int SHOOTER_STATOR_CURRENT_LIMIT_AMPS = 60; //not sure
-    public static final int SHOOTER_SUPPLY_CURRENT_LIMIT_AMPS = 20; //not sure
-    public static final int FEEDER_STATOR_CURRENT_LIMIT_AMPS = 50; //not sure
-    public static final int FEEDER_SUPPLY_CURRENT_LIMIT_AMPS = 20; //not sure
-
+    public static final int SHOOTER_STATOR_CURRENT_LIMIT_AMPS = 60;
+    public static final int SHOOTER_SUPPLY_CURRENT_LIMIT_AMPS = 20;
+    public static final int FEEDER_STATOR_CURRENT_LIMIT_AMPS = 50;
+    public static final int FEEDER_SUPPLY_CURRENT_LIMIT_AMPS = 20; 
 
     public static final double SHOOT_VOLTAGE = 6.5;
     public static final double FEED_VOLTAGE = 6.0; 
     public static final double ERROR_TOLERANCE_RPM = 200.0;
-    public static final double TARGET_VELOCITY_RPM = 3800.0;
+    public static final double LEFT_TARGET_VELOCITY_RPM = 2400.0;
+    public static final double RIGHT_TARGET_VELOCITY_RPM = 3500.0;
+    public static final double FEEDER_TARGET_VELOCITY_RPM = 2100.0;
     
     public static TalonFXConfiguration ShooterConfig(boolean inverted) {
       TalonFXConfiguration config = new TalonFXConfiguration();
@@ -223,11 +227,11 @@ public final class Constants {
       config.CurrentLimits.StatorCurrentLimit = ShooterConstants.SHOOTER_STATOR_CURRENT_LIMIT_AMPS;
 
       // PID values is still undetermined, need to be tuned
-      config.Slot0.kP = 10.0;
+      config.Slot0.kP = 1.0;
       config.Slot0.kI = 0.0;
       config.Slot0.kD = 0.1;
       config.Slot0.kS = 0.34204;
-      config.Slot0.kV = 0.11977;
+      config.Slot0.kV = 0.12;
       config.Slot0.kA = 0.006;
 
       return config;
@@ -257,7 +261,7 @@ public final class Constants {
 
   public static class LimelightConstants {
     public static final String LIMELIGHT_NAME = "limelight";
-    
+
     public static class PIDs {
       public static final PIDController x_pid = new PIDController(1.0, 0, 0.1);
       public static final PIDController y_pid = new PIDController(2.5, 2.0*1e-3, 0.01);

@@ -15,42 +15,50 @@ import frc.robot.Constants.ShooterConstants;
 
 public class Shooter extends SubsystemBase {
   private TalonFX feederMotor;
-  private TalonFX leader_leftMotor;
-  private TalonFX follower_rightMotor;
+  private TalonFX shooterLeftMotor;
+  private TalonFX shooterRightMotor;
 
-  private double targetVelocityRPM = ShooterConstants.TARGET_VELOCITY_RPM;
+  private double leftTargetVelocityRPM = ShooterConstants.LEFT_TARGET_VELOCITY_RPM;
+  private double rightTargetVelocityRPM = ShooterConstants.RIGHT_TARGET_VELOCITY_RPM;
+  private double feederTargetVelocityRPM = ShooterConstants.FEEDER_TARGET_VELOCITY_RPM;
 
-  private NetworkTable table = NetworkTableInstance.getDefault().getTable("Shooter");
-  private NetworkTableEntry velociyEntry = table.getEntry("Velocity");
-  private NetworkTableEntry voltageEntry = table.getEntry("Voltage");
-  private NetworkTableEntry currenEntry = table.getEntry("Current");
-  private NetworkTableEntry readyEntry = table.getEntry("Ready");
+  private NetworkTable lefttable = NetworkTableInstance.getDefault().getTable("LeftShooter");
+  private NetworkTableEntry leftVelociyEntry = lefttable.getEntry("Velocity");
+  private NetworkTableEntry leftVoltageEntry = lefttable.getEntry("Voltage");
+  private NetworkTableEntry leftCurrenEntry = lefttable.getEntry("Current");
+  private NetworkTableEntry leftReadyEntry = lefttable.getEntry("Ready");
+
+  private NetworkTable righttable = NetworkTableInstance.getDefault().getTable("RightShooter");
+  private NetworkTableEntry rightVelociyEntry = righttable.getEntry("Velocity");
+  private NetworkTableEntry rightVoltageEntry = righttable.getEntry("Voltage");
+  private NetworkTableEntry rightCurrenEntry = righttable.getEntry("Current");
+  private NetworkTableEntry rightReadyEntry = righttable.getEntry("Ready");
   
   private final VelocityVoltage m_velocity = new VelocityVoltage(0.0);
 
   public Shooter() {
     this.feederMotor = new TalonFX(DeviceIDs.ShooterFeederMotorID);
-    this.leader_leftMotor = new TalonFX(DeviceIDs.leader_ShooterLeftMotorID);
-    this.follower_rightMotor = new TalonFX(DeviceIDs.follwer_ShooterRightMotorID);
+    this.shooterLeftMotor = new TalonFX(DeviceIDs.ShooterLeftMotorID);
+    this.shooterRightMotor = new TalonFX(DeviceIDs.ShooterRightMotorID);
     
     
-    leader_leftMotor.getConfigurator().apply(ShooterConstants.ShooterConfig(ShooterConstants.ShooterMotorInverted));
-    follower_rightMotor.getConfigurator().apply(ShooterConstants.ShooterConfig(ShooterConstants.ShooterMotorInverted));
+    shooterLeftMotor.getConfigurator().apply(ShooterConstants.ShooterConfig(ShooterConstants.ShooterLeftMotorInverted));
+    shooterRightMotor.getConfigurator().apply(ShooterConstants.ShooterConfig(ShooterConstants.ShooterRightMotorInverted));
     feederMotor.getConfigurator().apply(ShooterConstants.FeederConfig(ShooterConstants.ShooterFeederMotorInverted));
-
-    follower_rightMotor.setControl(new Follower(DeviceIDs.leader_ShooterLeftMotorID, MotorAlignmentValue.Opposed));
   }
 
-  public void runShooterVoltage() {
-    leader_leftMotor.setControl(m_velocity.withVelocity(targetVelocityRPM / 60));
+  public void runShooterVelocity() {
+    shooterLeftMotor.setControl(m_velocity.withVelocity(leftTargetVelocityRPM / 60));
+    shooterRightMotor.setControl(m_velocity.withVelocity(rightTargetVelocityRPM / 60));
   }
 
-  public void runFeederVoltage() {
-    feederMotor.setControl(m_velocity.withVelocity(targetVelocityRPM / 60));
+  public void runFeederVelocity() {
+    feederMotor.setControl(m_velocity.withVelocity(feederTargetVelocityRPM / 60));
   }
 
   public void stop() {
-    leader_leftMotor.set(0);
+    shooterLeftMotor.set(0);
+    shooterRightMotor.set(0);
     feederMotor.set(0.0);
   }
 
@@ -59,24 +67,37 @@ public class Shooter extends SubsystemBase {
     double targetRPS = RPM / 60;
   }*/
 
-  public double getShooterRPM() {
-    double currentRPS = leader_leftMotor.getVelocity().getValueAsDouble();
+  public double getLeftMotorRPM() {
+    double currentRPS = shooterLeftMotor.getVelocity().getValueAsDouble();
+    return currentRPS * 60.0;
+  }
+
+  public double getRightMotorRPM() {
+    double currentRPS = shooterRightMotor.getVelocity().getValueAsDouble();
     return currentRPS * 60.0;
   }
 
   public boolean isAtTarget() {
-    if (targetVelocityRPM == 0) {
+    if ((leftTargetVelocityRPM == 0) && (rightTargetVelocityRPM == 0)) {
       return false;
     }
 
-    return (Math.abs(getShooterRPM() - targetVelocityRPM) <= ShooterConstants.ERROR_TOLERANCE_RPM);
+    return ((Math.abs(getLeftMotorRPM() - leftTargetVelocityRPM) <= ShooterConstants.ERROR_TOLERANCE_RPM) 
+    && (Math.abs(getRightMotorRPM() - rightTargetVelocityRPM) <= ShooterConstants.ERROR_TOLERANCE_RPM));
   }
 
   private void updateNetworkTable() {
-    velociyEntry.setDouble(getShooterRPM());
-    voltageEntry.setDouble(leader_leftMotor.getMotorVoltage().getValueAsDouble());
-    currenEntry.setDouble(leader_leftMotor.getSupplyCurrent().getValueAsDouble());
-    readyEntry.setBoolean(isAtTarget());
+    // left
+    leftVelociyEntry.setDouble(getLeftMotorRPM());
+    leftVoltageEntry.setDouble(shooterLeftMotor.getMotorVoltage().getValueAsDouble());
+    leftCurrenEntry.setDouble(shooterLeftMotor.getSupplyCurrent().getValueAsDouble());
+    leftReadyEntry.setBoolean(isAtTarget());
+
+    // right
+    rightVelociyEntry.setDouble(getRightMotorRPM());
+    rightVoltageEntry.setDouble(shooterRightMotor.getMotorVoltage().getValueAsDouble());
+    rightCurrenEntry.setDouble(shooterRightMotor.getSupplyCurrent().getValueAsDouble());
+    rightReadyEntry.setBoolean(isAtTarget());
   }
  
   @Override
