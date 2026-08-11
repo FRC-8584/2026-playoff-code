@@ -8,10 +8,12 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Inhale;
+import frc.robot.commands.Stretch;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -33,7 +35,8 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    new JoystickButton(joystick_1, 1).whileTrue(new Inhale(m_intakeSubsystem));
+    new JoystickButton(joystick_2, 1).whileTrue(new Inhale(m_intakeSubsystem));
+    new JoystickButton(joystick_2, 2).onTrue(new Stretch(m_intakeSubsystem));
   }
 
   public Command getAutonomousCommand() {

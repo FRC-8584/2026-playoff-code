@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
@@ -12,11 +11,9 @@ import frc.robot.subsystems.Intake.IntakeSubsystem;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class Stretch extends Command {
   private final IntakeSubsystem m_intakeSubsystem;
-  private Supplier<Double> y;
 
-  public Stretch(IntakeSubsystem intakeSubsystem, Supplier<Double> _y) {
+  public Stretch(IntakeSubsystem intakeSubsystem) {
     m_intakeSubsystem  = intakeSubsystem;
-    y = _y;
     addRequirements(intakeSubsystem);
   }
 
@@ -27,7 +24,7 @@ public class Stretch extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intakeSubsystem.slide(y.get());
+    m_intakeSubsystem.stretchOut();
   }
 
   // Called once the command ends or is interrupted.

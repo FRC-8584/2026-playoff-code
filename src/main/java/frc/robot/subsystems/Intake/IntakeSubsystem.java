@@ -29,8 +29,8 @@ public class IntakeSubsystem extends SubsystemBase {
     m_position = new PositionVoltage(0.0);
   }
 
-  public void runRoller(Double volts) {
-    rollerMotor.setVoltage(volts);
+  public void runRoller() {
+    rollerMotor.setVoltage(IntakeConstants.ROLLING_VOLTAGE);
   }
  
   public void stopRoller() {
@@ -38,20 +38,10 @@ public class IntakeSubsystem extends SubsystemBase {
   }
  
   public void stretchOut() {
-    m_position.Slot = 0;
+    m_position.Slot = 1;
     stretchMotor.setControl(m_position.withPosition(IntakeConstants.LIMIT_ROTATION));
   }
  
-  public void foldUp() {
-    m_position.Slot = 1;
-    stretchMotor.setControl(m_position.withPosition(0));
-  }
-
-  public void slide(double y) {
-    m_position.Slot = 0;
-    stretchMotor.setControl(m_position.withPosition(y * IntakeConstants.LIMIT_ROTATION));
-  }
-
   @Override
   public void periodic() {
     position = stretchMotor.getPosition().getValueAsDouble();
