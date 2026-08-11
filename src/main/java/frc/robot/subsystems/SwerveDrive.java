@@ -190,7 +190,10 @@ public class SwerveDrive extends SubsystemBase {
 
     poseEstimator.update(getRotation(), getModulePositions());
     var vision = LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.LIMELIGHT_NAME);
-    if(vision.tagCount > 0 && vision.timestampSeconds > 0.0 && Math.abs(gyro.getAngularVelocityZWorld().getValueAsDouble()) < 360.0 ) {
+    if(vision.tagCount > 0
+       && vision.timestampSeconds > 0.0
+       && Math.abs(gyro.getAngularVelocityZWorld().getValueAsDouble()) < 360.0 
+       && LimelightHelpers.getTA(LimelightConstants.LIMELIGHT_NAME) < 20.0) {
       poseEstimator.addVisionMeasurement(vision.pose,vision.timestampSeconds);
     }
   }
