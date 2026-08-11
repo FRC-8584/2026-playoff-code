@@ -5,6 +5,13 @@
 package frc.robot;
 
 import frc.robot.commands.Autos;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.Inhale;
+import frc.robot.commands.Stretch;
+import frc.robot.subsystems.Intake.IntakeSubsystem;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 import frc.robot.commands.Move;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.Transport;
@@ -20,8 +27,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+  private final Joystick joystick_1 = new Joystick(0);
+  private final Joystick joystick_2 = new Joystick(1);
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final SwerveDrive m_swervedrive = new SwerveDrive();
   private final Transfer m_transfer = new Transfer();
   private final Shooter m_shooter = new Shooter();
@@ -51,13 +60,12 @@ public class RobotContainer {
   
     // Shooter
     new JoystickButton(joystick_2, 6).onTrue(new Shoot(m_shooter));
+    
+    // intake
+    new JoystickButton(joystick_2, 1).whileTrue(new Inhale(m_intakeSubsystem));
+    new JoystickButton(joystick_2, 2).onTrue(new Stretch(m_intakeSubsystem));
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return Autos.exampleAuto(m_exampleSubsystem);

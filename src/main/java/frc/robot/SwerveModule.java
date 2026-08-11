@@ -1,12 +1,11 @@
 package frc.robot;
 
-import static edu.wpi.first.units.Units.Rotation;
-
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.SwerveConstants;
@@ -53,6 +52,18 @@ public class SwerveModule {
 
   private Rotation2d getEncoderAngle() {
     return Rotation2d.fromDegrees(turningEncoder.getAbsolutePosition().getValueAsDouble() * 360.0);
+  }
+
+  private double getDriveDistanceMeters() {
+    double motorRotations = driveMotor.getPosition().getValueAsDouble();
+
+    double wheelRotations = motorRotations / SwerveConstants.kDriveGearRatio;
+
+    return wheelRotations * SwerveConstants.kWheelCircumferenceMeters;
+}
+
+  public SwerveModulePosition getPosition() {
+    return new SwerveModulePosition(getDriveDistanceMeters(), getEncoderAngle());
   }
 
   public void printStatus() {
