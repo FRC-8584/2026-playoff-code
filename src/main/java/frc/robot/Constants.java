@@ -29,6 +29,12 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
 
+  public static class DeviceID {
+    public static final int TransferMotorID = 15;
+  }
+
+  public static class TransferConstants {
+    public static final double kRedLineMaxvelocity = 21020.0 / 60.0; //用AndyMark給的 紅線馬達 最高free RPM作為上限值
   public static class DeviceIDs {
     //chassis
     public static final int RightFrontDriveMotorID = 1;
