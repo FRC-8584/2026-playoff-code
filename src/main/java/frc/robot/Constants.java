@@ -134,7 +134,7 @@ public final class Constants {
   public static class IntakeConstants {
     // Roller Constants
     public static final int STATOR_CURRENT_LIMIT_AMPS = 50; //not sure
-    public static final int SUPPLY_CURRENT_LIMIT_AMPS = 50; //not sures
+    public static final int SUPPLY_CURRENT_LIMIT_AMPS = 50; //not sure
   }
 
   public static class TransferConstants {
