@@ -18,7 +18,7 @@ public class Shooter extends SubsystemBase {
   private TalonFX leader_leftMotor;
   private TalonFX follower_rightMotor;
 
-  private double targetVelocityRPM = 5000.0;
+  private double targetVelocityRPM = ShooterConstants.TARGET_VELOCITY_RPM;
 
   private NetworkTable table = NetworkTableInstance.getDefault().getTable("Shooter");
   private NetworkTableEntry velociyEntry = table.getEntry("Velocity");
