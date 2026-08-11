@@ -10,7 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPXConfiguration;
 
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Voltage;
-import frc.robot.Constants.DeviceID;
+import frc.robot.Constants.DeviceIDs;
 import frc.robot.Constants.TransferConstants;
 
 public class TransferIOVictor implements TransferIO {
@@ -20,7 +20,7 @@ public class TransferIOVictor implements TransferIO {
 
     public TransferIOVictor() {
 
-        transfer_motor = new VictorSPX(DeviceID.TransferMotorID);
+        transfer_motor = new VictorSPX(DeviceIDs.TransferMotorID);
 
     }
 

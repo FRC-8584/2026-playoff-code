@@ -69,5 +69,6 @@ public class SwerveModule {
   public void printStatus() {
     SmartDashboard.putNumber(name + " Drive Velocity: ", driveOutput);
     SmartDashboard.putNumber(name + " Turning Output: ", turningOutput);
+    SmartDashboard.putNumber(name + "Current Angle", getEncoderAngle().getDegrees());
   }
 }

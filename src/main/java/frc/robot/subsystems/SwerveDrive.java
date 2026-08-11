@@ -59,14 +59,14 @@ public class SwerveDrive extends SubsystemBase {
     this.RightFront_module = new SwerveModule(DeviceIDs.RightFrontDriveMotorID, DeviceIDs.RightFrontTurningMotorID, 
     DeviceIDs.RightFrontEncoderID, SwerveConstants.RIGHT_FRONT_OFFSET, true,true, "RightFront");
 
-    this.RightRear_module = new SwerveModule(DeviceIDs.RightRearDriveMotorID, DeviceIDs.RightRearTurningMotorID, 
-    DeviceIDs.RightRearEncoderID, SwerveConstants.RIGHT_REAR_OFFSET, true, true, "RightRear");
+    this.LeftFront_module = new SwerveModule(DeviceIDs.LeftFrontDriveMotorID, DeviceIDs.LeftFrontTurningMotorID, 
+    DeviceIDs.LeftFrontEncoderID, SwerveConstants.LEFT_FRONT_OFFSET, true, true, "LeftFront");
     
     this.LeftRear_module = new SwerveModule(DeviceIDs.LeftRearDriveMotorID, DeviceIDs.LeftRearTurningMotorID, 
     DeviceIDs.LeftRearEncoderID, SwerveConstants.LEFT_REAR_OFFSET, false, true, "LeftRear");
 
-    this.LeftFront_module = new SwerveModule(DeviceIDs.LeftFrontDriveMotorID, DeviceIDs.LeftFrontTurningMotorID, 
-    DeviceIDs.LeftFrontEncoderID, SwerveConstants.LEFT_FRONT_OFFSET, true, true, "LeftFront");
+    this.RightRear_module = new SwerveModule(DeviceIDs.RightRearDriveMotorID, DeviceIDs.RightRearTurningMotorID, 
+    DeviceIDs.RightRearEncoderID, SwerveConstants.RIGHT_REAR_OFFSET, false, true, "RightRear");
     
     gyro = new Pigeon2(DeviceIDs.GyroID);
     gyro.getConfigurator().apply(SwerveConstants.SwerveConfigs.GyroConfig());

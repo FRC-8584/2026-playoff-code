@@ -14,7 +14,7 @@ public class Shooter extends SubsystemBase {
   private TalonFX leader_leftMotor;
   private TalonFX follower_rightMotor;
 
-  private double targetVelocity = 0.0;
+  private double targetVelocityRPM = 5000.0;
   
   private final VoltageOut m_voltage = new VoltageOut(0);
 
@@ -45,10 +45,8 @@ public class Shooter extends SubsystemBase {
   }
 
   /*public void setTargetRPM (double RPM) {
-    targetVelocity = RPM;
+    targetVelocityRPM = RPM;
     double targetRPS = RPM / 60;
-
-
   }*/
 
   public double getShooterRPM() {
@@ -57,11 +55,11 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean isAtTarget() {
-    if (targetVelocity == 0) {
+    if (targetVelocityRPM == 0) {
       return false;
     }
 
-    return (Math.abs(getShooterRPM() - targetVelocity) <= ShooterConstants.ERROR_TOLERANCE_RPM);
+    return (Math.abs(getShooterRPM() - targetVelocityRPM) <= ShooterConstants.ERROR_TOLERANCE_RPM);
   }
  
   @Override
