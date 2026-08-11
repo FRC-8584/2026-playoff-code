@@ -12,16 +12,19 @@ import edu.wpi.first.units.measure.AngularVelocity;
 
 public class TransferConstant {
 
-    public static final int motorID = 14;
+    public static final int motorID = 16;
 
     public static final AngularVelocity RUNNING_RPS
-        = AngularVelocity.ofBaseUnits(45,Units.RotationsPerSecond);
+        = AngularVelocity.ofBaseUnits(60 ,Units.RotationsPerSecond);
 
+    public static final AngularVelocity REVERSE_RPS
+        = AngularVelocity.ofBaseUnits(-60,Units.RotationsPerSecond);
+    
     public static final AngularAcceleration MAX_ACCELERATION
         = AngularAcceleration.ofBaseUnits(90, RotationsPerSecondPerSecond);
     
-    public static final int MAX_SUPPLY_CURRENT = 20;
-    public static final int MAX_STATOR_CURRENT = 60;
+    public static final int MAX_SUPPLY_CURRENT = 15;
+    public static final int MAX_STATOR_CURRENT = 65;
 
     public static final boolean IsINVERTED = false;
     
@@ -31,8 +34,6 @@ public class TransferConstant {
 
     public static final double GEAR_RATIO = 1.0;
 
-    
-
-
+    public static final double RedLineMaxvelocity = 21020.0 / 60.0;    
 
 }

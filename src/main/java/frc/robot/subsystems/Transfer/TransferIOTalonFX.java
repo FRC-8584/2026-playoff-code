@@ -1,5 +1,7 @@
 package frc.robot.subsystems.Transfer;
 
+import static edu.wpi.first.units.Units.RotationsPerSecond;
+
 import java.time.Year;
 import java.util.spi.CurrencyNameProvider;
 
@@ -47,17 +49,24 @@ public class TransferIOTalonFX implements TransferIO{
 
         configs.MotorOutput.DutyCycleNeutralDeadband = TransferConstant.DEADBAND;
 
-        configs.Slot0.kP = 0.1;
+        configs.Slot0.kP = 1.0;
         configs.Slot0.kI = 0.0;
         configs.Slot0.kD = 0.0;
+        configs.Slot0.kS = 2.028;
+        configs.Slot0.kV = 0.084465;
+        configs.Slot0.kA = 0.024006;
 
         configs.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
         configs.Feedback.SensorToMechanismRatio = TransferConstant.GEAR_RATIO;
+        configs.Feedback.RotorToSensorRatio = 1.0 / TransferConstant.GEAR_RATIO;
+
         
         this.trans_motor.getConfigurator().apply(configs);
     }
 
     public TransferIOTalonFX() {
+
+        trans_motor = new TalonFX(TransferConstant.motorID);
 
         velocity = trans_motor.getVelocity();
         volt = trans_motor.getSupplyVoltage();
@@ -80,7 +89,12 @@ public class TransferIOTalonFX implements TransferIO{
 
     @Override
     public void setVelocity(AngularVelocity velocity) {
-        trans_motor.setControl(req.withVelocity(velocity));
+        trans_motor.setControl(req.withVelocity(velocity.abs(RotationsPerSecond)));
+    }
+
+    @Override
+    public void stop() {
+        trans_motor.stopMotor();
     }
 
     @Override
@@ -93,6 +107,11 @@ public class TransferIOTalonFX implements TransferIO{
         return volt.getValue();
     }
 
+    @Override
+    public double getTemp() {
+        return temp.getValueAsDouble();
+    }
+
 
     @Override
     public void updateInputs(TransferIOInputs inputs) {
@@ -100,10 +119,11 @@ public class TransferIOTalonFX implements TransferIO{
             velocity,
             volt,
             sat_current,
-            sup_current
+            sup_current,
+            temp
         );
 
-        inputs.transferRPS = velocity.getValueAsDouble();
+        inputs.transferRPS = velocity.getValueAsDouble()*6.0;
         inputs.transferSuppliedAmp = sup_current.getValueAsDouble();
         inputs.transferSatorAmp = sat_current.getValueAsDouble();
         inputs.transferAppliedVoltage = volt.getValueAsDouble();

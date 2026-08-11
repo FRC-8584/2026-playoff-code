@@ -17,7 +17,7 @@ public interface TransferIO {
     public default AngularVelocity getVelocity(){return RotationsPerSecond.of(0);};
     public default Voltage getVoltage() {return Volt.of(0);};
     public default void updateInputs(TransferIOInputs inputs) {}
-
+    public default double getTemp() {return 0.0;}
     @AutoLog
     public class TransferIOInputs {
         public double transferRPS = 0.0;
