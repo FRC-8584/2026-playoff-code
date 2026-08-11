@@ -69,7 +69,7 @@ public class TransferIOTalonFX implements TransferIO{
         trans_motor = new TalonFX(TransferConstant.motorID);
 
         velocity = trans_motor.getVelocity();
-        volt = trans_motor.getSupplyVoltage();
+        volt = trans_motor.getMotorVoltage();
         temp = trans_motor.getDeviceTemp();
         sup_current = trans_motor.getSupplyCurrent();
         sat_current = trans_motor.getStatorCurrent();
