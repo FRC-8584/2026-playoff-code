@@ -214,7 +214,7 @@ public final class Constants {
       config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
       // PID values is still undetermined, need to be tuned
-      config.Slot0.kP = 0.1;
+      config.Slot0.kP = 0.2;
       config.Slot0.kI = 0.0;
       config.Slot0.kD = 0.0;
       config.Slot0.kS = 0.34204;
