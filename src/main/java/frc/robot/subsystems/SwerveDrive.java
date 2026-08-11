@@ -25,6 +25,8 @@ import frc.robot.Constants.DeviceIDs;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.SwerveConstants;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 
@@ -39,6 +41,12 @@ public class SwerveDrive extends SubsystemBase {
   private SwerveDrivePoseEstimator poseEstimator;
   private double pose[];
   
+  private NetworkTable table = NetworkTableInstance.getDefault().getTable("Swerve");
+  private NetworkTable poseTable = table.getSubTable("Pose");
+  private NetworkTableEntry poseXEntry = poseTable.getEntry("X");
+  private NetworkTableEntry poseYEntry = poseTable.getEntry("Y");
+  private NetworkTableEntry poseRotationEntry = poseTable.getEntry("Rotation");
+
   private boolean fieldRelative = true;
   private final StructArrayPublisher<SwerveModuleState> publisher;
   private SwerveModuleState[] moduleStates = new SwerveModuleState[] {
@@ -162,8 +170,16 @@ public class SwerveDrive extends SubsystemBase {
     return fieldRelative;
   }
 
+  public void updatePoseTable() {
+    Pose2d pose = getPose();
+    poseXEntry.setDouble(pose.getX());
+    poseYEntry.setDouble(pose.getY());
+    poseRotationEntry.setDouble(pose.getRotation().getDegrees());
+  }
+
   @Override
   public void periodic() {
+    updatePoseTable();
     // This method will be called once per scheduler run.
     RightFront_module.printStatus();
     LeftFront_module.printStatus();

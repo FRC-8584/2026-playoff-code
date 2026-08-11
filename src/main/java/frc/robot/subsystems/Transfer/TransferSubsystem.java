@@ -31,16 +31,18 @@ public class TransferSubsystem extends SubsystemBase{
         io = new TransferIOTalonFX();
     }
 
-    @Override
-    public void periodic() {
-        io.updateInputs(inputs);
-
-
+    private void updateNetworkTable() {
         velocity_entry.setDouble(inputs.transferRPS);
         voltage_entry.setDouble(inputs.transferAppliedVoltage);
         current_entry.setDouble(inputs.transferSatorAmp);
         temp_entry.setDouble(io.getTemp());
+    }
 
+    @Override
+    public void periodic() {
+        io.updateInputs(inputs);
+
+        updateNetworkTable();
 
         Logger.processInputs("Transfer", inputs);
     }
