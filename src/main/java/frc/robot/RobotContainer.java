@@ -11,6 +11,9 @@ import frc.robot.commands.Inhale;
 import frc.robot.commands.Stretch;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.Transfer.TransferSubsystem;
+
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.Joystick;
 
 import frc.robot.commands.Move;
@@ -59,8 +62,13 @@ public class RobotContainer {
     new JoystickButton(joystick_2, 5).whileTrue(TransferSubsystem.getInstance().run(TransferConstants.TransferMotorInverted));
 
     // Shooter
-    new JoystickButton(joystick_2, 6).onTrue(new Shoot(m_shooter));
+    new JoystickButton(joystick_2, 6).whileTrue(new Shoot(m_shooter));
   }
+
+  private void configNamedCommands() {
+    NamedCommands.registerCommand("Shoot in middle", getAutonomousCommand());
+  } 
+
 
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous

@@ -81,7 +81,7 @@ public class SwerveDrive extends SubsystemBase {
   }
 
   public Rotation2d getRotation() {
-    return Rotation2d.fromDegrees(MathUtil.inputModulus(-gyro.getYaw().getValueAsDouble(), -180.0, 180.0));
+    return Rotation2d.fromDegrees(MathUtil.inputModulus(gyro.getYaw().getValueAsDouble(), -180.0, 180.0));
   }
 
   public SwerveModulePosition[] getModulePositions() {

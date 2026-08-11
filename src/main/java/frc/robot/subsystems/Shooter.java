@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
@@ -14,9 +15,9 @@ public class Shooter extends SubsystemBase {
   private TalonFX leader_leftMotor;
   private TalonFX follower_rightMotor;
 
-  private double targetVelocityRPM = 5000.0;
+  private double targetVelocityRPM = ShooterConstants.TARGET_VELOCITY_RPM;
   
-  private final VoltageOut m_voltage = new VoltageOut(0);
+  private final VelocityVoltage m_velocity = new VelocityVoltage(0.0);
 
   public Shooter() {
     this.feederMotor = new TalonFX(DeviceIDs.ShooterFeederMotorID);
@@ -32,11 +33,11 @@ public class Shooter extends SubsystemBase {
   }
 
   public void runShooterVoltage() {
-    leader_leftMotor.setControl(m_voltage.withOutput(ShooterConstants.SHOOT_VOLTAGE));
+    leader_leftMotor.setControl(m_velocity.withVelocity(targetVelocityRPM / 60));
   }
 
   public void runFeederVoltage() {
-    feederMotor.setControl(m_voltage.withOutput(ShooterConstants.FEED_VOLTAGE));
+    feederMotor.setControl(m_velocity.withVelocity(targetVelocityRPM / 60));
   }
 
   public void stop() {

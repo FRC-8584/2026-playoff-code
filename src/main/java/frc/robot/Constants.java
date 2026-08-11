@@ -73,7 +73,7 @@ public final class Constants {
     public static final double kRadian = 
     Math.sqrt(Math.pow(kSwerveWheelDistance_x/2.0, 2) + Math.pow(kSwerveWheelDistance_y/2.0, 2)); //meter
 
-    public static final double MAX_DRIVE_SPEED = 1.0; //m/s                UNDONE
+    public static final double MAX_DRIVE_SPEED = 1.5; //m/s                UNDONE
     public static final double MAX_TURN_SPEED = MAX_DRIVE_SPEED / kRadian; //rad/s
     
     public static final Translation2d RightFront_location = new Translation2d(kSwerveWheelDistance_x/2.0, -kSwerveWheelDistance_y/2.0); //meter
@@ -139,7 +139,7 @@ public final class Constants {
     public static final int STATOR_CURRENT_LIMIT_AMPS = 50; //not sure
     public static final int SUPPLY_CURRENT_LIMIT_AMPS = 50; //not sure
     public static final double LIMIT_ROTATION = 60.0;
-    public static final double ROLLING_VOLTAGE = 3.5;
+    public static final double ROLLING_VOLTAGE = 12.0;
 
     public static TalonFXConfiguration RollerConfig() {
       TalonFXConfiguration config = new TalonFXConfiguration();
@@ -205,6 +205,7 @@ public final class Constants {
     public static final double SHOOT_VOLTAGE = 6.5;
     public static final double FEED_VOLTAGE = 6.0; 
     public static final double ERROR_TOLERANCE_RPM = 100.0;
+    public static final double TARGET_VELOCITY_RPM = 4500.0;
     
     public static TalonFXConfiguration ShooterConfig(boolean inverted) {
       TalonFXConfiguration config = new TalonFXConfiguration();
