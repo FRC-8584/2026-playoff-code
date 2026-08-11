@@ -4,9 +4,17 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -22,6 +30,29 @@ public final class Constants {
   }
 
   public static class DeviceIDs {
+    //chassis
+    public static final int RightFrontDriveMotorID = 1;
+    public static final int RightFrontTurningMotorID = 2;
+
+    public static final int RightRearDriveMotorID = 3;
+    public static final int RightRearTurningMotorID = 4;
+    
+    public static final int LeftRearDriveMotorID = 5;
+    public static final int LeftRearTurningMotorID = 6;
+
+    public static final int LeftFrontDriveMotorID = 7;
+    public static final int LeftFrontTurningMotorID = 8;
+    
+    //Encoders
+    public static final int RightFrontEncoderID = 9;
+    public static final int RightRearEncoderID = 10;
+    public static final int LeftRearEncoderID = 11;
+    public static final int LeftFrontEncoderID = 12;
+
+    //gyro
+    public static final int GyroID = 13;
+    
+    //intake
     public static final int RollerMotorID = 14;
     public static final int StretchMotorID = 15; 
   }
@@ -80,7 +111,116 @@ public final class Constants {
       config.Slot1.kA = 0.0;
 
       return config;
+  }
+
+  public static class SwerveConstants {
+    public static final double kDriveGearRatio = 8.14; // L1:8.14, L2:6.75, L3:6.12 (慢到快)
+    public static final double kWheelRadius = 2.0; //inch  
+    public static final double kWheelRadiusMeters = Units.inchesToMeters(2.0);
+    public static final double WheelPerimeter = kWheelRadius * 2 * Math.PI; //inch
+    public static final double kWheelCircumferenceMeters = 2.0 * Math.PI * kWheelRadiusMeters;
+    public static final double kSwerveWheelDistance_x = 0.68; //meter
+    public static final double kSwerveWheelDistance_y = 0.68; //meter
+    public static final double kRadian = 
+    Math.sqrt(Math.pow(kSwerveWheelDistance_x/2.0, 2) + Math.pow(kSwerveWheelDistance_y/2.0, 2)); //meter
+
+    public static final double MAX_DRIVE_SPEED = 1.0; //m/s                UNDONE
+    public static final double MAX_TURN_SPEED = MAX_DRIVE_SPEED / kRadian; //rad/s
+    
+    public static final Translation2d RightFront_location = new Translation2d(kSwerveWheelDistance_x/2.0, -kSwerveWheelDistance_y/2.0); //meter
+    public static final Translation2d LeftFront_location  = new Translation2d(kSwerveWheelDistance_x/2.0, kSwerveWheelDistance_y/2.0);
+    public static final Translation2d LeftRear_location   = new Translation2d(-kSwerveWheelDistance_x/2.0, kSwerveWheelDistance_y/2.0);
+    public static final Translation2d RightRear_location  = new Translation2d(-kSwerveWheelDistance_x/2.0, -kSwerveWheelDistance_y/2.0); 
+    
+    public static final double RIGHT_FRONT_OFFSET = -0.070312;
+    public static final double RIGHT_REAR_OFFSET  = -0.227539;
+    public static final double LEFT_REAR_OFFSET   = -0.048339;
+    public static final double LEFT_FRONT_OFFSET  = -0.207763;
+    
+    public static final class SwerveConfigs {
+      public static TalonFXConfiguration DriveMotorConfig(boolean inverted) {
+        TalonFXConfiguration config = new TalonFXConfiguration();
+        
+        config.MotorOutput.Inverted = inverted ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+
+        config.Slot0.kP = 0.1;
+        config.Slot0.kI = 0.0;
+        config.Slot0.kD = 0.0;
+        config.Slot0.kV = 0.0;
+
+        return config;
+      }
+
+      public static TalonFXConfiguration TurningMotorConfig(boolean inverted) {
+        TalonFXConfiguration config = new TalonFXConfiguration();
+        
+        config.MotorOutput.Inverted = inverted ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        config.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+        
+        config.Slot0.kP = 0.1;
+        config.Slot0.kI = 0.0;
+        config.Slot0.kD = 0.0;
+        config.Slot0.kV = 0.0;
+        return config;
+      }
+
+      public static CANcoderConfiguration CANCoderConfig(double offset) {
+        CANcoderConfiguration config = new CANcoderConfiguration();
+        
+        config.MagnetSensor.MagnetOffset = offset;
+        config.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+        
+        return config;
+      }
+
+      public static Pigeon2Configuration GyroConfig() {
+        Pigeon2Configuration config = new Pigeon2Configuration();
+
+        return config;
+      }
     }
   }
 
+  public static class LimelightConstants {
+    public static final String LIMELIGHT_NAME = "limelight";
+    
+    public static class PIDs {
+      public static final PIDController x_pid = new PIDController(1.0, 0, 0.1);
+      public static final PIDController y_pid = new PIDController(2.5, 2.0*1e-3, 0.01);
+      public static final PIDController turn_pid = new PIDController(0.3, 0, 0);
+    }
+  }
+
+  public static class IntakeConstants {
+    // Roller Constants
+    public static final int STATOR_CURRENT_LIMIT_AMPS = 50; //not sure
+    public static final int SUPPLY_CURRENT_LIMIT_AMPS = 50; //not sures
+  }
+
+  public static final class FieldConstants {
+    public static final class HubConstants {
+      // Always blue origin
+      public static final Translation2d BLUE_HUB_CENTER = new Translation2d(4.625, 4.034);
+
+      public static final Translation2d RED_HUB_CENTER = new Translation2d(11.915, 4.034);
+
+      // 機器人「中心」到 Hub 中心的射擊距離 r
+      public static final double SHOOTING_RADIUS_METERS = 2.50; //needed to be tuned later
+
+      public static final double TURN_KP = 0.01; /* tune */
+      public static final double DRIVE_KP = 0.09; /* tune */
+
+      public static final double ANGLE_TOLERANCE_RAD = Units.degreesToRadians(2.5);
+      public static final double DISTANCE_TOLERANCE_METERS = 0.08;
+    }
+  }
+  
+  public static class DeadBands {
+    public static double deadband(double parameter, double deadband) {
+      if(Math.abs(parameter) < deadband) parameter = 0.0;
+      return parameter;
+    }
+  }
 }

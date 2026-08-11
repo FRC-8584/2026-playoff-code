@@ -5,8 +5,8 @@ import org.littletonrobotics.junction.AutoLog;
 public interface RollerIO  {
   default public void updateInputs(RollerInputs inputs) {}
 
-  default public void applyConfiguration() {}
-  
+  default public void updateConfigs(double kp, double ki, double kd, double ks, double kv) {}
+
   default public void setVoltage(double voltage){}
   
   default public void setVelocity(double velocityRPS){}
