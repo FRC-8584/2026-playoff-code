@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.Constants.TransferConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.Move;
 import frc.robot.commands.Shoot;
@@ -51,8 +49,8 @@ public class RobotContainer {
     new JoystickButton(joystick_1, 5).onTrue(Commands.runOnce(() -> m_swervedrive.setFieldRelative(false), m_swervedrive));
     new JoystickButton(joystick_1, 6).onTrue(Commands.runOnce(() -> m_swervedrive.setFieldRelative(true), m_swervedrive));
   
-    // Transport + Shooter
-    new JoystickButton(joystick_2, 1).whileTrue(new ParallelCommandGroup(new Transport(m_transfer), new Shoot(m_shooter)));
+    // Shooter
+    new JoystickButton(joystick_2, 6).onTrue(new Shoot(m_shooter));
   }
 
   /**

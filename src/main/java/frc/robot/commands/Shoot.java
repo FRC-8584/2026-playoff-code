@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.Shooter;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -24,8 +23,8 @@ public class Shoot extends Command {
   @Override
   public void execute() {
     m_shooter.runShooterVoltage();
-    if(isAtTarget()) {
-      
+    if(m_shooter.isAtTarget()) {
+      m_shooter.runFeederVoltage();
     }
   }
 
