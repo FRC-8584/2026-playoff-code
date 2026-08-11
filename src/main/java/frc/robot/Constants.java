@@ -111,7 +111,9 @@ public final class Constants {
       config.Slot1.kA = 0.0;
 
       return config;
+    }
   }
+
 
   public static class SwerveConstants {
     public static final double kDriveGearRatio = 8.14; // L1:8.14, L2:6.75, L3:6.12 (慢到快)
@@ -193,12 +195,7 @@ public final class Constants {
     }
   }
 
-  public static class IntakeConstants {
-    // Roller Constants
-    public static final int STATOR_CURRENT_LIMIT_AMPS = 50; //not sure
-    public static final int SUPPLY_CURRENT_LIMIT_AMPS = 50; //not sures
-  }
-
+ 
   public static final class FieldConstants {
     public static final class HubConstants {
       // Always blue origin
