@@ -5,6 +5,9 @@ import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DeviceIDs;
 import frc.robot.Constants.ShooterConstants;
@@ -15,6 +18,12 @@ public class Shooter extends SubsystemBase {
   private TalonFX follower_rightMotor;
 
   private double targetVelocityRPM = 5000.0;
+
+  private NetworkTable table = NetworkTableInstance.getDefault().getTable("Shooter");
+  private NetworkTableEntry velociyEntry = table.getEntry("Velocity");
+  private NetworkTableEntry voltageEntry = table.getEntry("Voltage");
+  private NetworkTableEntry currenEntry = table.getEntry("Current");
+  private NetworkTableEntry readyEntry = table.getEntry("Ready");
   
   private final VoltageOut m_voltage = new VoltageOut(0);
 
@@ -61,9 +70,17 @@ public class Shooter extends SubsystemBase {
 
     return (Math.abs(getShooterRPM() - targetVelocityRPM) <= ShooterConstants.ERROR_TOLERANCE_RPM);
   }
+
+  private void updateNetworkTable() {
+    velociyEntry.setDouble(getShooterRPM());
+    voltageEntry.setDouble(leader_leftMotor.getMotorVoltage().getValueAsDouble());
+    currenEntry.setDouble(leader_leftMotor.getSupplyCurrent().getValueAsDouble());
+    readyEntry.setBoolean(isAtTarget());
+  }
  
   @Override
   public void periodic() {
+    updateNetworkTable();
     // This method will be called once per scheduler run
   }
 }
